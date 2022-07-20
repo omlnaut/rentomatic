@@ -1,4 +1,7 @@
 import uuid
+
+import pytest
+
 from rentomatic.domain.room import Room
 
 
@@ -13,9 +16,14 @@ def test_room_model_init():
     assert room.latitude == 51.75436293
 
 
-def test_room_model_from_dict():
-    code = uuid.uuid4()
-    init_dict = {
+@pytest.fixture
+def code():
+    return uuid.uuid4()
+
+
+@pytest.fixture
+def init_dict(code):
+    return {
         "code": code,
         "size": 200,
         "price": 10,
@@ -23,6 +31,8 @@ def test_room_model_from_dict():
         "latitude": 51.75436293,
     }
 
+
+def test_room_model_from_dict(init_dict, code):
     room = Room.from_dict(init_dict)
 
     assert room.code == code
@@ -32,14 +42,14 @@ def test_room_model_from_dict():
     assert room.latitude == 51.75436293
 
 
-def test_room_model_to_dict():
-    init_dict = {
-        "code": uuid.uuid4(),
-        "size": 200,
-        "price": 10,
-        "longitude": -0.09998975,
-        "latitude": 51.75436293,
-    }
+def test_room_model_to_dict(init_dict):
     room = Room.from_dict(init_dict)
 
     assert room.to_dict() == init_dict
+
+
+def test_room_model_comparison(init_dict):
+    room1 = Room.from_dict(init_dict)
+    room2 = Room.from_dict(init_dict)
+
+    assert room1 == room2

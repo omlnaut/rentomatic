@@ -16,5 +16,5 @@ class Room:
     def from_dict(cls, init_dict: dict[str, Any]) -> "Room":
         return cls(**init_dict)
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         return dataclasses.asdict(self)
