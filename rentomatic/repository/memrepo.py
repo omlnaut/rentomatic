@@ -4,7 +4,7 @@ from rentomatic.domain.room import Room
 
 
 class MemRepo:
-    def __init__(self, data: dict[str, Any]):
+    def __init__(self, data: list[dict[str, Any]]):
         self.data = data
 
     def list(self) -> list[Room]:
