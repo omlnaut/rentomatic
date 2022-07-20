@@ -1,2 +1,11 @@
+import uuid
+from dataclasses import dataclass
+
+
+@dataclass
 class Room:
-    pass
+    code: uuid.UUID
+    size: int
+    price: int
+    longitude: float
+    latitude: float
