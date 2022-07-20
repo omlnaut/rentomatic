@@ -1,3 +1,4 @@
+import dataclasses
 import uuid
 from dataclasses import dataclass
 from typing import Any
@@ -14,3 +15,6 @@ class Room:
     @classmethod
     def from_dict(cls, init_dict: dict[str, Any]) -> "Room":
         return cls(**init_dict)
+
+    def to_dict(self):
+        return dataclasses.asdict(self)
