@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture
 def code():
-    return uuid.uuid4()
+    return uuid.uuid4().hex
 
 
 @pytest.fixture

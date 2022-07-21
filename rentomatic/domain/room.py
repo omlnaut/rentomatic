@@ -6,7 +6,7 @@ from typing import Any
 
 @dataclass
 class Room:
-    code: uuid.UUID
+    code: str
     size: int
     price: int
     longitude: float

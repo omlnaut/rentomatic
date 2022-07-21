@@ -1,6 +1,6 @@
 import uuid
 
-import pytest
+from ..constants import init_dict, code
 
 from rentomatic.domain.room import Room
 
