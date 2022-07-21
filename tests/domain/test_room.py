@@ -5,22 +5,6 @@ import pytest
 from rentomatic.domain.room import Room
 
 
-@pytest.fixture
-def code():
-    return uuid.uuid4()
-
-
-@pytest.fixture
-def init_dict(code):
-    return {
-        "code": code,
-        "size": 200,
-        "price": 10,
-        "longitude": -0.09998975,
-        "latitude": 51.75436293,
-    }
-
-
 def test_room_model_init():
     code = uuid.uuid4()
     room = Room(code, size=200, price=10, longitude=-0.09998975, latitude=51.75436293)
