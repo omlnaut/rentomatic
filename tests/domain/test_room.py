@@ -5,8 +5,7 @@ from ..constants import init_dict, code
 from rentomatic.domain.room import Room
 
 
-def test_room_model_init():
-    code = uuid.uuid4()
+def test_room_model_init(code):
     room = Room(code, size=200, price=10, longitude=-0.09998975, latitude=51.75436293)
 
     assert room.code == code

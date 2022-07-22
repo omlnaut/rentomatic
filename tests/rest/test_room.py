@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 
 from rentomatic.domain.room import Room
-from ..constants import init_dict, code
+from ..constants import init_dict, code, serialized_dict
 
 
 @pytest.fixture
@@ -13,14 +13,12 @@ def rooms(init_dict):
 
 
 @mock.patch("application.rest.room.room_list_use_case")
-def test_get(mock_use_case, client, init_dict, rooms):
+def test_get(mock_use_case, client, serialized_dict, rooms):
     mock_use_case.return_value = rooms
 
     response = client.get("/rooms")
 
-    assert json.loads(response.data.decode("UTF-8")) == [
-        Room.from_dict(init_dict).to_dict()
-    ]
+    assert json.loads(response.data.decode("UTF-8")) == [serialized_dict]
     mock_use_case.assert_called()
     assert response.status_code == 200
     assert response.mimetype == "application/json"
