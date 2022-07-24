@@ -1,6 +1,16 @@
 import pytest
 
-from rentomatic.requests.room_list import build_room_list_request
+from rentomatic.requests.room_list import (
+    build_room_list_request,
+    RoomListInvalidRequest,
+)
+
+
+def test_RoomListInvalidRequest_without_parameters():
+    request = RoomListInvalidRequest()
+
+    assert bool(request) is False
+    assert not request.has_errors()
 
 
 def test_build_room_list_request_without_parameters():

@@ -17,8 +17,8 @@ class RoomListInvalidRequest:
     The errors attribute contains all validation errors.
     """
 
-    def __init__(self, errors: list[RequestError]):
-        self.errors = errors
+    def __init__(self, errors=None):
+        self.errors: list[RequestError] = errors or list()
 
     def has_errors(self) -> bool:
         return len(self.errors) > 0

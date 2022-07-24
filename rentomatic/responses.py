@@ -1,18 +1,49 @@
-from dataclasses import dataclass
+from enum import Enum
+from typing import Union
+
+from rentomatic.requests.room_list import RoomListInvalidRequest
+
+
+class ResponseTypes(Enum):
+    SUCCESS = 1
+    PARAMETERS_ERROR = 2
 
 
 class ResponseSuccess:
-    def __init__(self, value):
+    def __init__(self, value: str):
         self.value = value
+        self.response_type = ResponseTypes.SUCCESS
 
     def __bool__(self):
         return True
 
 
 class ResponseFailure:
-    def __init__(self, type: str, message: str):
-        self.type = type
-        self.message = message
+    def __init__(self, response_type: ResponseTypes, message: Union[str, Exception]):
+        self.type = response_type
+        self.message = self._format_msg(message)
 
     def __bool__(self):
         return False
+
+    @property
+    def value(self) -> dict[str, str]:
+        return {"type": self.type, "message": self.message}
+
+    def _format_msg(self, message: Union[str, Exception]) -> str:
+        if isinstance(message, Exception):
+            return f"Exception: {message}"
+
+        return message
+
+
+def build_response_from_invalid_request(
+    request: RoomListInvalidRequest,
+) -> ResponseFailure:
+    msg = _build_error_msg(request)
+    return ResponseFailure(ResponseTypes.PARAMETERS_ERROR, msg)
+
+
+def _build_error_msg(request: RoomListInvalidRequest) -> str:
+    msg = "\n".join(f"{error.parameter}: {error.message}" for error in request.errors)
+    return msg
