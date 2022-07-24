@@ -1,11 +1,24 @@
+from typing import Union
+
 from rentomatic.repository.interface import IRepository
-from rentomatic.requests.room_list import RoomListValidRequest
-from rentomatic.responses import ResponseSuccess
+from rentomatic.requests.room_list import RoomListValidRequest, RoomListInvalidRequest
+from rentomatic.responses import (
+    ResponseSuccess,
+    ResponseFailure,
+    ResponseTypes,
+    build_response_from_invalid_request,
+)
 
 
 def room_list_use_case(
-    repo: IRepository, request: RoomListValidRequest
-) -> ResponseSuccess:
-    rooms = repo.list()
+    repo: IRepository, request: Union[RoomListValidRequest, RoomListInvalidRequest]
+) -> Union[ResponseSuccess, ResponseFailure]:
 
-    return ResponseSuccess(rooms)
+    if not request:
+        return build_response_from_invalid_request(request)
+    if request:
+        try:
+            rooms = repo.list(filters=request.filters)
+            return ResponseSuccess(rooms)
+        except Exception as e:
+            return ResponseFailure(ResponseTypes.SYSTEM_ERROR, e)

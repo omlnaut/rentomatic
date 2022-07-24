@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Union
+from typing import Union, Any
 
 from rentomatic.requests.room_list import RoomListInvalidRequest
 
@@ -7,10 +7,11 @@ from rentomatic.requests.room_list import RoomListInvalidRequest
 class ResponseTypes(Enum):
     SUCCESS = 1
     PARAMETERS_ERROR = 2
+    SYSTEM_ERROR = 3
 
 
 class ResponseSuccess:
-    def __init__(self, value: str):
+    def __init__(self, value: Any):
         self.value = value
         self.response_type = ResponseTypes.SUCCESS
 
