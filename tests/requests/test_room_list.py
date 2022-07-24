@@ -21,8 +21,21 @@ def test_build_room_list_request_with_incorrect_filter_keys():
     request = build_room_list_request(filters={"a": 1})
 
     assert request.has_errors()
-    assert request.errors[0].parameter == "filters"
+    error = request.errors[0]
+    assert error.parameter == "filters"
+    assert "Key a cannot be used" in error.message
     assert bool(request) is False
+
+
+def test_build_room_list_request_with_multiple_incorrect_filter_keys():
+    request = build_room_list_request(filters={"a": 1, "b": 2})
+
+    assert request.has_errors()
+    assert len(request.errors) == 2
+    assert bool(request) is False
+
+    for error in request.errors:
+        assert error.parameter == "filters"
 
 
 @pytest.mark.parametrize("key", ["code__eq", "price__eq", "price__lt", "price__gt"])

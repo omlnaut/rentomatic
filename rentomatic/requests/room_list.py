@@ -42,13 +42,21 @@ def build_room_list_request(
     :param filters: dictionary mapping filter keys to the corresponding value
     :return: Request object constructed from the filter as specified above
     """
+    # todo: refactor to dedicated filters class
     if filters is None:
         return RoomListValidRequest(filters)
 
+    errors = []
     for filter, value in filters.items():
         if filter not in ACCEPTED_FILTERS:
-            return RoomListInvalidRequest(
-                [RequestError(parameter="filters", message="")]
+            errors.append(
+                RequestError(
+                    parameter="filters",
+                    message=f"Key {filter} cannot be used. Accepted key are: {ACCEPTED_FILTERS}",
+                )
             )
+
+    if errors:
+        return RoomListInvalidRequest(errors)
 
     return RoomListValidRequest(filters)
