@@ -17,19 +17,11 @@ def test_build_room_list_request_with_empty_filters():
     assert bool(request) is True
 
 
-def test_build_room_list_request_with_invalid_filters_parameter():
-    request = build_room_list_request(filters=5)
-
-    assert request.has_errors()
-    assert request.errors[0]["parameter"] == "filters"
-    assert bool(request) is False
-
-
 def test_build_room_list_request_with_incorrect_filter_keys():
     request = build_room_list_request(filters={"a": 1})
 
     assert request.has_errors()
-    assert request.errors[0]["parameter"] == "filters"
+    assert request.errors[0].parameter == "filters"
     assert bool(request) is False
 
 
@@ -50,5 +42,5 @@ def test_build_room_list_request_rejected_filters(key):
     request = build_room_list_request(filters=filters)
 
     assert request.has_errors
-    assert request.errors[0]["parameter"] == "filters"
+    assert request.errors[0].parameter == "filters"
     assert bool(request) is False
