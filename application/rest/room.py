@@ -62,15 +62,8 @@ def room_list():
     repo = MemRepo(rooms)
     result = room_list_use_case(repo, request_object)
 
-    if result:
-        return Response(
-            json.dumps(result.value, cls=RoomJsonEncoder),
-            mimetype="application/json",
-            status=200,
-        )
-    else:
-        return Response(
-            json.dumps(result.value),
-            mimetype="application/json",
-            status=STATUS_CODES[result.response_type],
-        )
+    return Response(
+        json.dumps(result.value, cls=RoomJsonEncoder),
+        mimetype="application/json",
+        status=STATUS_CODES[result.response_type],
+    )

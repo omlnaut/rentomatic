@@ -66,7 +66,7 @@ def test_room_list_without_parameters(domain_rooms, repo):
 
 def test_room_list_with_filters(domain_rooms, repo):
     repo.list.return_value = domain_rooms
-    qry_filters = {"code__eq": 5}
+    qry_filters = {"code__eq": "5"}
     request = build_room_list_request(filters=qry_filters)
 
     response = room_list_use_case(repo, request)

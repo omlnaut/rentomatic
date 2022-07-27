@@ -1,14 +1,13 @@
-from enum import Enum
 from typing import Union, Any
 
 from rentomatic.requests.room_list import RoomListInvalidRequest
 
 
-class ResponseTypes(Enum):
-    SUCCESS = 1
-    PARAMETERS_ERROR = 2
-    SYSTEM_ERROR = 3
-    RESOURCE_ERROR = 4
+class ResponseTypes:
+    PARAMETERS_ERROR = "ParametersError"
+    RESOURCE_ERROR = "ResourceError"
+    SYSTEM_ERROR = "SystemError"
+    SUCCESS = "Success"
 
 
 class ResponseSuccess:
@@ -22,7 +21,7 @@ class ResponseSuccess:
 
 class ResponseFailure:
     def __init__(self, response_type: ResponseTypes, message: Union[str, Exception]):
-        self.type = response_type
+        self.response_type = response_type
         self.message = self._format_msg(message)
 
     def __bool__(self):
@@ -30,7 +29,7 @@ class ResponseFailure:
 
     @property
     def value(self) -> dict[str, str]:
-        return {"type": self.type.value, "message": self.message}
+        return {"type": self.response_type, "message": self.message}
 
     def _format_msg(self, message: Union[str, Exception]) -> str:
         if isinstance(message, Exception):

@@ -47,7 +47,7 @@ def test_response_failure_has_type_and_message(
 ):
     response = ResponseFailure(generic_response_type, generic_response_message)
 
-    assert response.type == generic_response_type
+    assert response.response_type == generic_response_type
     assert response.message == generic_response_message
     assert response.value == {
         "type": generic_response_type,
@@ -60,7 +60,7 @@ def test_response_failure_initialisation_with_exception(generic_response_type):
     response = ResponseFailure(generic_response_type, Exception(message))
 
     assert bool(response) is False
-    assert response.type == generic_response_type
+    assert response.response_type == generic_response_type
     assert response.message == f"Exception: {message}"
 
 
@@ -68,7 +68,7 @@ def test_response_failure_from_empty_invalid_request():
     response = build_response_from_invalid_request(RoomListInvalidRequest())
 
     assert bool(response) is False
-    assert response.type == ResponseTypes.PARAMETERS_ERROR
+    assert response.response_type == ResponseTypes.PARAMETERS_ERROR
 
 
 def test_response_failure_from_invalid_request_with_errors():
@@ -83,5 +83,5 @@ def test_response_failure_from_invalid_request_with_errors():
     response = build_response_from_invalid_request(request)
 
     assert bool(response) is False
-    assert response.type == ResponseTypes.PARAMETERS_ERROR
+    assert response.response_type == ResponseTypes.PARAMETERS_ERROR
     assert response.message == f"path: {mandatory}\npath: {blank}"
