@@ -1,8 +1,10 @@
 import json
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request
 
 from rentomatic.repository.memrepo import MemRepo
+from rentomatic.requests.room_list import build_room_list_request
+from rentomatic.responses import ResponseTypes
 from rentomatic.use_cases.room_list import room_list_use_case
 from rentomatic.serializers.room import RoomJsonEncoder
 
@@ -39,14 +41,36 @@ rooms = [
     },
 ]
 
+STATUS_CODES = {
+    ResponseTypes.SUCCESS: 200,
+    ResponseTypes.RESOURCE_ERROR: 404,
+    ResponseTypes.PARAMETERS_ERROR: 400,
+    ResponseTypes.SYSTEM_ERROR: 500,
+}
+
 
 @blueprint.route("/rooms", methods=["GET"])
 def room_list():
-    repo = MemRepo(rooms)
-    result = room_list_use_case(repo)
+    query_parameters = {"filters": {}}
 
-    return Response(
-        json.dumps(result, cls=RoomJsonEncoder),
-        mimetype="application/json",
-        status=200,
-    )
+    for arg, values in request.args.items():
+        if arg.startswith("filter_"):
+            query_parameters["filters"][arg.replace("filter_", "")] = values
+
+    request_object = build_room_list_request(filters=query_parameters["filters"])
+
+    repo = MemRepo(rooms)
+    result = room_list_use_case(repo, request_object)
+
+    if result:
+        return Response(
+            json.dumps(result.value, cls=RoomJsonEncoder),
+            mimetype="application/json",
+            status=200,
+        )
+    else:
+        return Response(
+            json.dumps(result.value),
+            mimetype="application/json",
+            status=STATUS_CODES[result.response_type],
+        )

@@ -8,6 +8,7 @@ class ResponseTypes(Enum):
     SUCCESS = 1
     PARAMETERS_ERROR = 2
     SYSTEM_ERROR = 3
+    RESOURCE_ERROR = 4
 
 
 class ResponseSuccess:
@@ -29,7 +30,7 @@ class ResponseFailure:
 
     @property
     def value(self) -> dict[str, str]:
-        return {"type": self.type, "message": self.message}
+        return {"type": self.type.value, "message": self.message}
 
     def _format_msg(self, message: Union[str, Exception]) -> str:
         if isinstance(message, Exception):

@@ -31,7 +31,7 @@ ACCEPTED_FILTERS = ["code__eq", "price__eq", "price__lt", "price__gt"]
 
 
 def build_room_list_request(
-    filters: dict[str, float] = None,
+    filters: dict[str, str] = None,
 ) -> Union[RoomListValidRequest, RoomListInvalidRequest]:
     """
     If a mapping of valid filters is passed, a RoomListValidRequest object is constructed with those filters and returned.
