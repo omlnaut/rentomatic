@@ -16,9 +16,8 @@ def room_list_use_case(
 
     if not request:
         return build_response_from_invalid_request(request)
-    if request:
-        try:
-            rooms = repo.list(filters=request.filters)
-            return ResponseSuccess(rooms)
-        except Exception as e:
-            return ResponseFailure(ResponseTypes.SYSTEM_ERROR, e)
+    try:
+        rooms = repo.list(filters=request.filters)
+        return ResponseSuccess(rooms)
+    except Exception as e:
+        return ResponseFailure(ResponseTypes.SYSTEM_ERROR, e)

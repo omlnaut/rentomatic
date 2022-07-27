@@ -20,7 +20,7 @@ class ResponseSuccess:
 
 
 class ResponseFailure:
-    def __init__(self, response_type: ResponseTypes, message: Union[str, Exception]):
+    def __init__(self, response_type: str, message: Union[str, Exception]):
         self.response_type = response_type
         self.message = self._format_msg(message)
 
