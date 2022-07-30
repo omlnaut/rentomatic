@@ -3,3 +3,7 @@ pytest-cov
 pytest-flask
 flask
 mypy
+SQLAlchemy
+sqlalchemy-stubs
+psycopg2
+docker-compose
