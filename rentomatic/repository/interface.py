@@ -1,8 +1,8 @@
-from typing import Protocol
+from typing import Protocol, Union
 
 from rentomatic.domain.room import Room
 
 
 class IRepository(Protocol):
-    def list(self, filters: dict[str, float]) -> list[Room]:
+    def list(self, filters: dict[str, Union[str, int]]) -> list[Room]:
         pass

@@ -1,6 +1,7 @@
 from typing import Any
 
 from rentomatic.repository.memrepo import MemRepo
+from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.use_cases.room_list import room_list_use_case
 
 
@@ -40,6 +41,7 @@ def setup_demo_rooms() -> list[dict[str, Any]]:
 
 if __name__ == "__main__":
     repo = MemRepo(setup_demo_rooms())
-    result = room_list_use_case(repo)
+    request = build_room_list_request()
+    result = room_list_use_case(repo, request)
 
     print(result)

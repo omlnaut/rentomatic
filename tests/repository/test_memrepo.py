@@ -43,7 +43,7 @@ def test_repository_list_without_parameters(room_dicts):
 
     rooms = [Room.from_dict(room_dict) for room_dict in room_dicts]
 
-    assert repo.list() == rooms
+    assert repo.list({}) == rooms
 
 
 def test_repository_list_with_code_equal_filter(room_dicts):
