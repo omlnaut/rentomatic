@@ -118,8 +118,9 @@ def test(args):
         "-svv",
         "--cov=application",
         "--cov-report=term-missing",
+        "-m integration",
     ]
-    cmdline.extend(args)
+    # cmdline.extend(args)
     subprocess.call(cmdline)
 
     cmdline = docker_compose_cmdline("down")
