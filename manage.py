@@ -3,6 +3,8 @@ import json
 import subprocess
 import time
 
+from pathlib import Path
+
 import click
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
@@ -13,21 +15,22 @@ def setenv(variable, default):
     os.environ[variable] = os.getenv(variable, default)
 
 
-APPLICATION_CONFIG_PATH = "config"
-DOCKER_PATH = "docker"
+BASE_PATH = Path(__file__).parent
+APPLICATION_CONFIG_PATH = BASE_PATH / "config"
+DOCKER_PATH = BASE_PATH / "docker"
 
 
-def app_config_file(config):
-    return os.path.join(APPLICATION_CONFIG_PATH, f"{config}.json")
+def app_config_file(config) -> Path:
+    return APPLICATION_CONFIG_PATH / f"{config}.json"
 
 
-def docker_compose_file(config):
-    return os.path.join(DOCKER_PATH, f"{config}.yml")
+def docker_compose_file(config) -> Path:
+    return DOCKER_PATH / f"{config}.yml"
 
 
 def read_json_configuration(config):
     # Read configuration from the relative JSON file
-    with open(app_config_file(config)) as f:
+    with app_config_file(config).open() as f:
         config_data = json.load(f)
 
     # Convert the config into a usable Python dictionary
